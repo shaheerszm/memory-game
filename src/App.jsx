@@ -22,6 +22,7 @@ function App() {
       for (let hit of response.hits) {
         imageList.push(hit.webformatURL);
       }
+      // shuffle and select first n images to be the deck
       imageList = shuffle(imageList);
       imageList.length = numImages;
 
@@ -41,26 +42,39 @@ function App() {
     return array;
   }
 
-  function correct() {
+  function correct(picked) {
     setScore((x) => x + 1);
+    prevImgs.current.push(picked);
   }
+
+  //reset game state
   function incorrect() {
+    if (score > bestScore) setBestScore(score);
     setScore(0);
-    alert("You already picked that one!");
+    prevImgs.current = [];
+    alert("You already picked that one! Try again.");
   }
 
   function cardClick(e) {
     e.preventDefault();
+    let picked = null;
 
-    let picked = e.target.src;
+    // if user clicks the button around it but not the image itself
+    if (e.target === e.currentTarget) {
+      picked = e.target.firstChild.src;
+      console.log(picked);
+    } else {
+      picked = e.target.src;
+      console.log(picked);
+    }
+
     let nextImages = shuffle(images);
     setImages(nextImages);
-    if (prevImgs.current.includes(e.target.src)) {
+    if (prevImgs.current.includes(picked)) {
       incorrect();
     } else {
-      correct();
+      correct(picked);
     }
-    prevImgs.current.push(picked);
   }
 
   function listImages(images) {
@@ -69,7 +83,7 @@ function App() {
         src={img}
         alt="alt-text"
         key={img.slice(-30, -4)}
-        onClick={cardClick}
+        handleClick={cardClick}
       ></Card>
     ));
   }

@@ -40,7 +40,7 @@ main {
   padding: 10px 0px;
 
   --grid-layout-gap: 10px;
-  --grid-column-count: 5;
+  --grid-column-count: 6;
   --grid-item--min-width: 200px;
 
   /**
