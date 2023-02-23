@@ -35,12 +35,30 @@
 }
 
 main {
-  display: grid;
   overflow: auto;
   row-gap: 40px;
-  column-gap: 10px;
   padding: 10px 0px;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+  --grid-layout-gap: 10px;
+  --grid-column-count: 5;
+  --grid-item--min-width: 200px;
+
+  /**
+   * Calculated values.
+   */
+  --gap-count: calc(var(--grid-column-count) - 1);
+  --total-gap-width: calc(var(--gap-count) * var(--grid-layout-gap));
+  --grid-item--max-width: calc(
+    (100% - var(--total-gap-width)) / var(--grid-column-count)
+  );
+
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(max(var(--grid-item--min-width), var(--grid-item--max-width)), 1fr)
+  );
+  grid-gap: var(--grid-layout-gap);
+  /* grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); */
 }
 
 footer {

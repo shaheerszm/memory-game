@@ -3,7 +3,8 @@ import "./App.css";
 import Card from "./Card";
 
 function App() {
-  const apiKey = "33706132-8b3de53a12171555d5574cbf8";
+  const numImages = 12;
+  const apiKey = import.meta.env.VITE_pixabay_api_key;
   const searchTerm = "kitten";
   var URL = "https://pixabay.com/api/?key=" + apiKey + "&q=" + searchTerm;
 
@@ -22,7 +23,7 @@ function App() {
         imageList.push(hit.webformatURL);
       }
       imageList = shuffle(imageList);
-      imageList.length = 16;
+      imageList.length = numImages;
 
       setImages(imageList);
     }
