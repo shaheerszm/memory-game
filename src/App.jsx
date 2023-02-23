@@ -5,8 +5,10 @@ import Card from "./Card";
 function App() {
   const numImages = 12;
   const apiKey = import.meta.env.VITE_pixabay_api_key;
-  const searchTerm = "kitten";
-  var URL = "https://pixabay.com/api/?key=" + apiKey + "&q=" + searchTerm;
+  const searchTerms = ["kitten", "puppy", "lamb", "bird"];
+  const randomIndex = Math.floor(Math.random() * searchTerms.length);
+  const URL =
+    "https://pixabay.com/api/?key=" + apiKey + "&q=" + searchTerms[randomIndex];
 
   const [images, setImages] = useState([]);
   const [score, setScore] = useState(0);
@@ -22,9 +24,7 @@ function App() {
       for (let hit of response.hits) {
         imageList.push(hit.webformatURL);
       }
-      // shuffle and select first n images to be the deck
       imageList = shuffle(imageList);
-      imageList.length = numImages;
 
       setImages(imageList);
     }
@@ -62,10 +62,8 @@ function App() {
     // if user clicks the button around it but not the image itself
     if (e.target === e.currentTarget) {
       picked = e.target.firstChild.src;
-      console.log(picked);
     } else {
       picked = e.target.src;
-      console.log(picked);
     }
 
     let nextImages = shuffle(images);
@@ -78,10 +76,12 @@ function App() {
   }
 
   function listImages(images) {
-    return images.map((img) => (
+    let imageList = [...images];
+    imageList.length = numImages;
+    return imageList.map((img) => (
       <Card
         src={img}
-        alt="alt-text"
+        alt="animal picture"
         key={img.slice(-30, -4)}
         handleClick={cardClick}
       ></Card>
@@ -91,7 +91,7 @@ function App() {
   return (
     <>
       <header>
-        <h1 className="title">Kitty Memory</h1>
+        <h1 className="title">Animal Memory</h1>
         <div className="score">
           <h2 className="scores" id="score-best">
             Best score: {bestScore}
